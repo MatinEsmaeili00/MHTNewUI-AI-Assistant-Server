@@ -1,0 +1,7 @@
+# Everything the server needs, including speech recognition (use this on the DGX Spark).
+fastapi
+uvicorn[standard]
+requests
+python-multipart
+faster-whisper
+av==17.1.0  # av 18+ removed an argument faster-whisper 1.2.1 still passes (voice breaks)

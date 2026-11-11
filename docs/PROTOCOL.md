@@ -305,3 +305,30 @@ failure. The server can use it to answer "did that work?" or to avoid repeating 
 | "highlight the femur" | `[{"type":"show_part","kind":"bone","name":"Femur","side":""}]` |
 | "make her run" | `[{"type":"play_action","name":"Running"}]` |
 | "what does the deltoid do?" | `[]`, `reply`: a short answer |
+
+## Clarifications (2026-11-11, from building both sides)
+
+Nothing here changes the protocol; these are the points the first implementations had to decide.
+
+- **Version.** A request whose `protocol` is not 1 gets `400` with a `detail`. A request without `protocol` is accepted.
+- **Key.** Every path except `GET /health` needs the key, unknown paths included (`401`, not `404`).
+- **Malformed requests** get `422` with a one-sentence `detail`. In `/v1/voice`, a `text` inside the `request`
+  part is ignored.
+- **Defaults are left out.** `value` is omitted when it is the default (1 step for `faster`, `slower`,
+  `zoom_in`, `zoom_out`). The client treats a missing `value` as that default.
+- **`timeline` `step`** has no default in the table above: the server sends 0.1 s for "step forward / back"
+  and 0.033 s for "next / previous frame"; the client uses 1/30 s if `value` is missing.
+- **`timeline` `seek` 1** means "the end". On a looping animation exactly 1 is the start again, so the client
+  goes to 0.999.
+- **`camera` `orbit`.** "Rotate left" is a negative `yaw` (the camera moves to its left). Checked on screen.
+- **`camera` `view` `left`** shows the avatar's own left side.
+- **`pose_estimation` with only the overlay.** "Hide the overlay" is sent as `enabled: true, overlay: false`
+  with `show_panel` set to what `context.pose.panel_open` is, so the panel does not open or close as a side
+  effect. The client also accepts an action with `overlay` or `show_panel` and no `enabled`.
+- **`need_catalog`.** The server asks when a request mentions a body part and it does not know `catalog_id`.
+  It never asks twice in a row for the same id: the second time it answers plainly without the names.
+- **`show_part` for "what is the femur".** A question that is only a part name is answered with `show_part`
+  (the client writes the description). "What does the deltoid do?" goes to the language model.
+- **Console.** In the Unreal console the server address is given as `host:port`; the console reads `//` as a
+  comment. The chat box's `/server http://host:8010` is not affected.
+

@@ -1,0 +1,27 @@
+# systemd USER unit for the MHT assistant server.
+#
+#   mkdir -p ~/.config/systemd/user
+#   cp deploy/mht-assistant.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now mht-assistant
+#   sudo loginctl enable-linger "$USER"      # keep it running after logout and start it at boot
+#
+# Logs:  journalctl --user -u mht-assistant -f
+#
+# The unit expects the repository in ~/MHTNewUI-AI-Assistant-Server. If it is somewhere else, change
+# the two paths below. Settings (API key, model, ...) go in the .env file in that folder; run.sh reads it.
+
+[Unit]
+Description=MHT assistant server (Unreal anatomy viewer chat and voice)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+WorkingDirectory=%h/MHTNewUI-AI-Assistant-Server
+ExecStart=%h/MHTNewUI-AI-Assistant-Server/run.sh
+Restart=on-failure
+RestartSec=3
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,9 @@
+# Tests and the text-only server (no speech recognition, no faster-whisper).
+#   pip install -r requirements-dev.txt        -> pytest runs, /v1/chat works, /v1/voice answers 503
+#   pip install -r requirements.txt            -> add this for voice
+fastapi
+uvicorn[standard]
+requests
+python-multipart
+pytest
+httpx  # FastAPI's TestClient needs it
