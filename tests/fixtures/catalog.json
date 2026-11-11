@@ -1,0 +1,1888 @@
+{
+ "parts": [
+  {
+   "kind": "muscle",
+   "name": "Abductor pollicis longus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Adductor brevis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Inner thigh"
+  },
+  {
+   "kind": "muscle",
+   "name": "Adductor longus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Inner thigh"
+  },
+  {
+   "kind": "muscle",
+   "name": "Adductor magnus & minimus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Inner thigh"
+  },
+  {
+   "kind": "muscle",
+   "name": "Anconeus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Elbow"
+  },
+  {
+   "kind": "muscle",
+   "name": "Anterior cruciate ligament",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Knee (ligament)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Articularis genus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Knee"
+  },
+  {
+   "kind": "muscle",
+   "name": "Biceps brachii",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Upper arm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Biceps femoris (long head)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Back of thigh (hamstring)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Biceps femoris (short head)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Back of thigh (hamstring)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Brachialis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Upper arm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Brachioradialis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Coracobrachialis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Upper arm / shoulder"
+  },
+  {
+   "kind": "muscle",
+   "name": "Deltoid (middle)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shoulder"
+  },
+  {
+   "kind": "muscle",
+   "name": "Extensor carpi radialis brevis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Extensor carpi radialis longus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Extensor carpi ulnaris",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Extensor digiti minimi",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Extensor digitorum longus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shin (front)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Extensor digitorum",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Extensor hallucis longus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shin (front)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Extensor indicis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Extensor pollicis longus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Extensor pollicis brevis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Fibularis brevis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Outer lower leg"
+  },
+  {
+   "kind": "muscle",
+   "name": "Fibularis longus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Outer lower leg"
+  },
+  {
+   "kind": "muscle",
+   "name": "Fibularis tertius",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Outer lower leg (front)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Flexor carpi radialis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Flexor carpi ulnaris",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Flexor digitorum longus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Calf (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Flexor digitorum profundus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Flexor digitorum superficialis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Flexor hallucis longus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Calf (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Flexor pollicis longus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Deltoid (anterior)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shoulder (front)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Gastrocnemius",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Calf"
+  },
+  {
+   "kind": "muscle",
+   "name": "Gluteus maximus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Buttock"
+  },
+  {
+   "kind": "muscle",
+   "name": "Gluteus medius",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Side of hip"
+  },
+  {
+   "kind": "muscle",
+   "name": "Gluteus minimus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Side of hip (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Gracilis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Inner thigh"
+  },
+  {
+   "kind": "muscle",
+   "name": "Iliacus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hip (front, deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Iliotibial tract",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Outer thigh (fascia)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Inferior gemellus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hip (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Infraspinatus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shoulder blade (back)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Interosseous membrane",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Between paired bones (fascia)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Lateral collateral ligament",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Knee (ligament)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Lateral patellofemoral ligament",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Knee (ligament)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Lateral patellotibial ligament",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Knee (ligament)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Trapezius (lower)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Upper back"
+  },
+  {
+   "kind": "muscle",
+   "name": "Medial collateral ligament",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Knee (ligament)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Medial patellofemoral ligament",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Knee (ligament)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Medial patellotibial ligament",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Knee (ligament)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Trapezius (middle)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Upper back"
+  },
+  {
+   "kind": "muscle",
+   "name": "Obturator externus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hip (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Obturator internus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hip (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Palmaris longus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Patellar ligament",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Knee (tendon)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Pectineus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Inner hip"
+  },
+  {
+   "kind": "muscle",
+   "name": "Pectoralis major",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Chest"
+  },
+  {
+   "kind": "muscle",
+   "name": "Pectoralis minor",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Chest (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Piriformis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Buttock (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Plantaris",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Back of knee / calf"
+  },
+  {
+   "kind": "muscle",
+   "name": "Popliteus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Back of knee"
+  },
+  {
+   "kind": "muscle",
+   "name": "Posterior cruciate ligament",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Knee (ligament)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Pronator quadratus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Pronator teres",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Psoas major",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hip / lower back (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Quadratus femoris",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hip (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Quadriceps tendon",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Knee (tendon)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Deltoid (posterior)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shoulder (back)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Rectus femoris",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Front of thigh (quadriceps)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Rhomboid major",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Upper back"
+  },
+  {
+   "kind": "muscle",
+   "name": "Rhomboid minor",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Upper back"
+  },
+  {
+   "kind": "muscle",
+   "name": "Sartorius",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Thigh (front, diagonal)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Semimembranosus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Back of thigh (hamstring)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Semitendinosus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Back of thigh (hamstring)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Soleus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Calf (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Subscapularis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shoulder blade (front)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Superior gemellus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hip (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Supinator (deep head)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Supinator",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "muscle",
+   "name": "Supraspinatus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shoulder blade (top)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Tensor fasciae latae",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Side of hip"
+  },
+  {
+   "kind": "muscle",
+   "name": "Teres major",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shoulder blade (lower edge)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Teres minor",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shoulder blade (back)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Tibialis anterior",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shin (front)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Tibialis posterior",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Calf (deep)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Triceps brachii (medial head)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Upper arm (back)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Triceps brachii",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Upper arm (back)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Trapezius (upper)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Neck and shoulders"
+  },
+  {
+   "kind": "muscle",
+   "name": "Vastus intermedius",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Front of thigh (quadriceps)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Vastus lateralis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Front / outer thigh (quadriceps)"
+  },
+  {
+   "kind": "muscle",
+   "name": "Vastus medialis",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Front / inner thigh (quadriceps)"
+  },
+  {
+   "kind": "bone",
+   "name": "Thyroid cartilage",
+   "sides": [
+    "center"
+   ],
+   "region": "Neck"
+  },
+  {
+   "kind": "bone",
+   "name": "Ethmoid bone",
+   "sides": [
+    "center"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Frontal bone",
+   "sides": [
+    "center"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Lacrimal bone",
+   "sides": [
+    "center"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Mandible (jaw)",
+   "sides": [
+    "center"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Maxilla",
+   "sides": [
+    "center"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Nasal bone",
+   "sides": [
+    "center"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Occipital bone",
+   "sides": [
+    "center"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Parietal bone",
+   "sides": [
+    "center"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Sphenoid bone",
+   "sides": [
+    "center"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Temporal bone",
+   "sides": [
+    "center"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Vomer",
+   "sides": [
+    "center"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Zygomatic bone",
+   "sides": [
+    "center"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Incus (ear)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Malleus (ear)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "Stapes (ear)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Skull"
+  },
+  {
+   "kind": "bone",
+   "name": "C3 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Cervical spine (neck)"
+  },
+  {
+   "kind": "bone",
+   "name": "C4 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Cervical spine (neck)"
+  },
+  {
+   "kind": "bone",
+   "name": "C5 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Cervical spine (neck)"
+  },
+  {
+   "kind": "bone",
+   "name": "C6 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Cervical spine (neck)"
+  },
+  {
+   "kind": "bone",
+   "name": "C7 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Cervical spine (neck)"
+  },
+  {
+   "kind": "bone",
+   "name": "Atlas (C1)",
+   "sides": [
+    "center"
+   ],
+   "region": "Cervical spine (neck)"
+  },
+  {
+   "kind": "bone",
+   "name": "Axis (C2)",
+   "sides": [
+    "center"
+   ],
+   "region": "Cervical spine (neck)"
+  },
+  {
+   "kind": "bone",
+   "name": "T1 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Thoracic spine"
+  },
+  {
+   "kind": "bone",
+   "name": "T3 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Thoracic spine"
+  },
+  {
+   "kind": "bone",
+   "name": "T4 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Thoracic spine"
+  },
+  {
+   "kind": "bone",
+   "name": "T5 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Thoracic spine"
+  },
+  {
+   "kind": "bone",
+   "name": "T6 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Thoracic spine"
+  },
+  {
+   "kind": "bone",
+   "name": "T12 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Thoracic spine"
+  },
+  {
+   "kind": "bone",
+   "name": "T2 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Thoracic spine"
+  },
+  {
+   "kind": "bone",
+   "name": "T7 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Thoracic spine"
+  },
+  {
+   "kind": "bone",
+   "name": "T8 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Thoracic spine"
+  },
+  {
+   "kind": "bone",
+   "name": "T9 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Thoracic spine"
+  },
+  {
+   "kind": "bone",
+   "name": "T10 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Thoracic spine"
+  },
+  {
+   "kind": "bone",
+   "name": "T11 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Thoracic spine"
+  },
+  {
+   "kind": "bone",
+   "name": "L1 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Lumbar spine"
+  },
+  {
+   "kind": "bone",
+   "name": "L4 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Lumbar spine"
+  },
+  {
+   "kind": "bone",
+   "name": "L2 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Lumbar spine"
+  },
+  {
+   "kind": "bone",
+   "name": "L3 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Lumbar spine"
+  },
+  {
+   "kind": "bone",
+   "name": "L5 vertebra",
+   "sides": [
+    "center"
+   ],
+   "region": "Lumbar spine"
+  },
+  {
+   "kind": "bone",
+   "name": "Coccyx",
+   "sides": [
+    "center"
+   ],
+   "region": "Pelvis"
+  },
+  {
+   "kind": "bone",
+   "name": "Hip bone (pelvis)",
+   "sides": [
+    "center"
+   ],
+   "region": "Pelvis"
+  },
+  {
+   "kind": "bone",
+   "name": "Sacrum",
+   "sides": [
+    "center"
+   ],
+   "region": "Pelvis"
+  },
+  {
+   "kind": "bone",
+   "name": "Rib 8 (false rib)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Rib 9 (false rib)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Rib 10 (false rib)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Rib 11 (floating rib)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Rib 12 (floating rib)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Rib 1 (true rib)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Rib 2 (true rib)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Rib 3 (true rib)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Rib 4 (true rib)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Rib 5 (true rib)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Rib 6 (true rib)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Rib 7 (true rib)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Costal cartilage",
+   "sides": [
+    "center"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Sternum (breastbone)",
+   "sides": [
+    "center"
+   ],
+   "region": "Rib cage"
+  },
+  {
+   "kind": "bone",
+   "name": "Clavicle (collarbone)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shoulder girdle"
+  },
+  {
+   "kind": "bone",
+   "name": "Femur",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Thigh"
+  },
+  {
+   "kind": "bone",
+   "name": "Fibula",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Lower leg"
+  },
+  {
+   "kind": "bone",
+   "name": "Humerus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Upper arm"
+  },
+  {
+   "kind": "bone",
+   "name": "Radius",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "bone",
+   "name": "Ulna",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Forearm"
+  },
+  {
+   "kind": "bone",
+   "name": "Patella (kneecap)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Knee"
+  },
+  {
+   "kind": "bone",
+   "name": "Tibia",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Lower leg"
+  },
+  {
+   "kind": "bone",
+   "name": "Scapula (shoulder blade)",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Shoulder girdle"
+  },
+  {
+   "kind": "bone",
+   "name": "Capitate",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Wrist (carpal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Hamate",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Wrist (carpal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Lunate",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Wrist (carpal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Pisiform",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Wrist (carpal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Scaphoid",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Wrist (carpal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Trapezium",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Wrist (carpal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Trapezoid",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Wrist (carpal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Triquetrum",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Wrist (carpal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Fifth metacarpal",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "First metacarpal",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Fourth metacarpal",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Second metacarpal",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Third metacarpal",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Proximal phalanx of the thumb",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Proximal phalanx of the index finger",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Proximal phalanx of the middle finger",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Proximal phalanx of the ring finger",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Proximal phalanx of the little finger",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Middle phalanx of the index finger",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Middle phalanx of the middle finger",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Middle phalanx of the ring finger",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Middle phalanx of the little finger",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Distal phalanx of the thumb",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Distal phalanx of the index finger",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Distal phalanx of the middle finger",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Distal phalanx of the ring finger",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Distal phalanx of the little finger",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Hand"
+  },
+  {
+   "kind": "bone",
+   "name": "Talus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (tarsal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Calcaneus",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (tarsal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Cuboid",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (tarsal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Navicular",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (tarsal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Lateral cuneiform",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (tarsal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Medial cuneiform",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (tarsal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Intermediate cuneiform",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (tarsal bones)"
+  },
+  {
+   "kind": "bone",
+   "name": "Fifth metatarsal",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot"
+  },
+  {
+   "kind": "bone",
+   "name": "First metatarsal",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot"
+  },
+  {
+   "kind": "bone",
+   "name": "Fourth metatarsal",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot"
+  },
+  {
+   "kind": "bone",
+   "name": "Second metatarsal",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot"
+  },
+  {
+   "kind": "bone",
+   "name": "Third metatarsal",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot"
+  },
+  {
+   "kind": "bone",
+   "name": "Proximal phalanx of the second toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Proximal phalanx of the third toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Proximal phalanx of the fourth toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Proximal phalanx of the little toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Proximal phalanx of the big toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Medial sesamoid of the big toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Lateral sesamoid of the big toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Middle phalanx of the second toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Middle phalanx of the third toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Middle phalanx of the fourth toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Middle phalanx of the little toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Distal phalanx of the big toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Distal phalanx of the second toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Distal phalanx of the third toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Distal phalanx of the fourth toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  },
+  {
+   "kind": "bone",
+   "name": "Distal phalanx of the little toe",
+   "sides": [
+    "left",
+    "right"
+   ],
+   "region": "Foot (toes)"
+  }
+ ]
+}
