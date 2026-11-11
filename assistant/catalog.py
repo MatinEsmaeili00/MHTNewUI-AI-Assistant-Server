@@ -653,7 +653,7 @@ class Catalog:
         kind_said, without_kind = take_kind(text)
         kind = kind_said or prefer_kind
         heard = key(without_kind) or key(text)
-        said = re.sub(r"^(?:(?:the|a|an|my|her|his|your) )+", "", without_kind or text)   # for the reply
+        said = re.sub(r"^(?:(?:the|a|an|my|her|his|your|in|on|of|at) )+", "", without_kind or text)   # for the reply
 
         def result(part: Part, how: str, others: list[str]) -> PartMatch:
             if side_said in part.sides:

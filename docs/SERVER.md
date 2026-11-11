@@ -77,7 +77,7 @@ twice in a row for the same id: the second time the reply says the part list is 
    |---|---|
    | `_rule_clear` | "clear the highlight" |
    | `_rule_question` | "what layer am I on", "how fast is it playing", "is it recording", ... (from the context) |
-   | `_rule_pose_angle` | "what is the right knee angle" |
+   | `_rule_pose_angle` | "what is the right knee angle". Not "is my knee angle normal for running": with a number in the context, a question about what the angle means (`_JUDGEMENT_RE`) goes to the language model |
    | `_rule_pose` | pose estimation on / off, overlay, "read the data" |
    | `_rule_panel` | open / close panels |
    | `_rule_avatar` | next / previous avatar |
@@ -132,26 +132,47 @@ All tables are checked against the catalog that was sent. A table entry whose pa
 returned: "lats" → "This avatar has no Latissimus dorsi ..." with the nearby parts from `RELATED`.
 
 When nothing matches: `I do not know a part called "fibia". The closest names I have are Tibia, Fibula and ...`,
-no action. When several parts fit ("vastus"): `Which one do you mean: ...?`
+no action. A description instead of a name ("the muscle that lifts the arm", `_DESCRIBED_RE` in `rules.py`) is
+not answered that way: it goes to the language model, which has every name of the avatar. When several parts fit ("vastus"): `Which one do you mean: ...?`
 
 Side: "left" / "right" → that side; nothing said → `""`; a part that only exists in the centre → `"center"`.
 
 ### 5. The language model (`assistant/llm.py`)
 
 Ollama `POST /api/chat` with `"format": <JSON schema>`, `"think": false` (retried without it if the model
-rejects the flag), `temperature 0`, `num_predict 400`, `keep_alive`. The system prompt has: what the app is,
-the action list, the reply rules (plain text, at most three sentences, no actions for questions), the current
-state as compact JSON, the available action clips, and **only the parts that could be meant** (at most 12,
-from `Catalog.candidates`: exact and fuzzy hits for the words of the sentence, and parts whose region matches).
+rejects the flag), `temperature 0`, `num_predict 400`, `keep_alive`. The system prompt has, in this order:
+
+1. What the app is, the action list and the reply rules: plain text, at most three sentences; a question gets
+   an answer and no action; either act or ask, never both; when the request is clear enough, act on the most
+   likely meaning; if the app cannot do it, say so and do nothing else; no offer at the end.
+2. **Every muscle and bone name of the avatar** (about 4200 characters for the real one), so that a described
+   part ("the bone that protects the brain at the front") can be answered with a name the avatar has.
+3. The current state as compact JSON and the available action clips.
+4. "Closest to what the user said": at most 12 parts from `Catalog.candidates` (exact and fuzzy hits for the
+   words of the sentence, parts whose region matches), then the highlighted part, then the parts the last
+   turns were about, so "ok show it to me" after a question about a muscle still has that muscle.
+
+Parts 1 and 2 are the same for every request of an avatar and come first: Ollama keeps the evaluated prompt
+and only reads what follows the first difference. `test_names_come_before_what_changes_per_request` guards
+that order.
+
 The last `SESSION_TURNS` turns of the session are sent as chat history.
+
+After the answer (`llm.ask`): a `side` of `left` or `right` in a `show_part` is removed unless the sentence has
+a side word (`left`, `right`, `other`, `opposite`, `both`, `same`). The model tends to pick a side nobody asked
+for; `""` lets the app take the side nearer to the camera.
 
 If Ollama cannot be reached, times out, or answers something that is not JSON: `source: "error"` and a reply
 that says the language model is not answering and lists a few direct commands.
 
 `FAKE_LLM=1` replaces the model with an echo (`(fake LLM) You said: ...`).
 
-**Not verified:** this path has only been run against a fake Ollama (see `tests/test_llm.py`). Check with the
-real model that the schema is accepted, that the answers are valid and short, and how long they take.
+At startup the model is loaded in a background thread (`llm.warm_up`). If Ollama is not up yet, as can happen
+after a reboot, the load is tried again every 10 seconds for two minutes.
+
+Verified on the Spark on 2026-11-11 with `gemma4:e4b` and `gemma4:12b`: both accept the schema, and every
+answer of about 90 requests was valid JSON in the right shape. What each model got wrong, and the times, are
+in `docs/SPARK_NOTES.md`. The tests still use a fake Ollama (`tests/test_llm.py`).
 
 ### 6. Validation (`assistant/actions.py`, `sanitize`)
 

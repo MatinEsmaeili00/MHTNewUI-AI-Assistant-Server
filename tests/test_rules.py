@@ -347,9 +347,34 @@ def test_every_action_type_is_covered():
     "   ",
     "again",
     "back",
+    # the number alone is no answer to these; the language model sees the angles too
+    "is my right knee angle normal for running?",
+    "my trunk angle is 84, is that ok?",
+    "why is the left knee angle so low",
+    # a description, not a name
+    "show me the muscle that lifts the arm",
+    "highlight the bone that protects the brain",
+    "show me the muscles used for jumping",
 ])
 def test_left_to_the_llm(text, context, catalog):
     assert rules.parse(text, context, catalog) is None
+
+
+def test_judgement_about_an_angle_still_reads_it_when_pose_estimation_is_off(context_pose_off, catalog):
+    """Without a number there is nothing for the language model to judge: switch it on and read, as before."""
+    result = rules.parse("is my right knee angle normal for running?", context_pose_off, catalog)
+    assert [action["type"] for action in result.actions] == ["pose_estimation", "read_pose_data"]
+
+
+def test_plain_angle_question_is_still_answered_by_the_rules(context, catalog):
+    result = rules.parse("what is the right knee angle", context, catalog)
+    assert result.actions == [] and result.reply == "The right knee is at 142 degrees."
+
+
+def test_region_reply_has_no_leftover_preposition(context, catalog):
+    result = rules.parse("show me the bone in the upper arm on the right side", context, catalog)
+    assert result.actions == [{"type": "show_part", "kind": "bone", "name": "Humerus", "side": "right"}]
+    assert result.reply == "For the upper arm I am showing the right Humerus."
 
 
 # ---- replies -----------------------------------------------------------------------------------

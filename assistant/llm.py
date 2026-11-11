@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import re
+import time
 
 import requests
 
@@ -87,8 +88,20 @@ reply: plain text for the chat box, at most 3 short sentences. No markdown, no l
 the actions will work.
 actions: the things the app should do now, in order. Use an action only when the user asks the app to do \
 something. For a question (anatomy, sports injuries, training, what you can do) or small talk, answer in reply \
-and use "actions": []. If you are not sure what the user wants, ask a short question in reply and use no \
-actions. Never invent part names, action names or numbers the user did not ask for.
+and use "actions": []. Never invent part names, action names or numbers the user did not ask for.
+
+Rules for every answer:
+1. A question gets an answer and "actions": []. "What does the calf muscle do?" is a question: explain, do not \
+show the part and do not play a clip.
+2. Either act or ask, never both. With actions, reply says what you are doing now ("Showing the muscle layer.") \
+and has no question in it. If you must ask what the user means, use "actions": [].
+3. When the request is clear enough, choose the most likely meaning and act: "it is too fast" means slower, \
+"under the skin" means the muscle layer, "the calf" means the main calf muscle.
+4. If the app cannot do it (no such action clip, no such part, nothing to do with the viewer), say so in one \
+sentence and use "actions": []. Never use another action instead.
+5. Do not end the reply with an offer or a question such as "Would you like me to ...?".
+6. Joint angles in the current state are in degrees, measured live from the webcam. When the user asks whether \
+an angle is normal or good, say the number, give a short general answer, and do not diagnose.
 
 Actions:
 {"type":"set_layer","layer":"body|muscles|skeleton"}
@@ -110,8 +123,10 @@ Actions:
 {"type":"open_panel","panel":"none|actions|pose_estimation|graphs|timeline|saved_videos|settings"}   (none = close)
 {"type":"switch_avatar","direction":"next|previous"}
 
-show_part: only with a name from the part list below, written exactly like that. "side" is "" when the user \
-did not say left or right. If the part is not in the list, say that you do not have it and use no show_part.
+show_part: only with a name from the lists of this avatar's muscles and bones below, written exactly like \
+that. When the user describes a part instead of naming it ("the muscle that lifts the arm"), choose the name \
+from those lists that fits best. "side" is "" when the user did not say left or right. If the avatar does not \
+have the part, say so and use no show_part.
 What you can do, if the user asks: show a layer, play / pause / change the speed, zoom and turn the camera, \
 start the pose estimation and read the joint angles, show a muscle or a bone by name, play an action clip, \
 open a panel, switch the avatar, and answer short questions about anatomy and movement."""
@@ -142,22 +157,66 @@ def _state(ctx: Context) -> dict:
     return state
 
 
+MAX_PROMPT_PARTS = 12
+MAX_ALL_NAMES_CHARS = 6000        # per kind; the real avatar needs about 2400
+_SIDE_WORD_RE = re.compile(r"\b(?:left|right|other|opposite|both|same)\b", flags=re.IGNORECASE)
+
+
+def _parts_in_question(text: str, ctx: Context, catalog: Catalog, history: list[dict]) -> list:
+    """
+    The parts the model may name: those the sentence could mean, then the highlighted part, then those the
+    last turns were about ("ok show it to me" after "what does the gastrocnemius do?" has no name in it).
+    """
+    parts = list(catalog.candidates(text, MAX_PROMPT_PARTS))
+    selected = ctx.selected_part
+    if selected:
+        part = catalog.part_named(selected.get("name"))
+        if part and part not in parts:
+            parts.append(part)
+    for turn in reversed(history[-4:]):
+        if len(parts) >= MAX_PROMPT_PARTS:
+            break
+        for part in catalog.candidates(turn.get("content", ""), 4):
+            if part not in parts:
+                parts.append(part)
+    return parts[:MAX_PROMPT_PARTS]
+
+
+def _fix_sides(actions: list[dict], text: str) -> None:
+    """The model likes to pick a side nobody asked for. Without a side word in the sentence: "" (the client
+    then takes the side nearer to the camera)."""
+    if _SIDE_WORD_RE.search(text):
+        return
+    for action in actions:
+        if action.get("type") == "show_part" and action.get("side") in ("left", "right"):
+            action["side"] = ""
+
+
 def build_messages(text: str, ctx: Context, catalog: Catalog | None, history: list[dict]) -> list[dict]:
-    lines = [SYSTEM_PROMPT, "", "Current state of the app: " + json.dumps(_state(ctx), ensure_ascii=False)[:2500]]
+    lines = [SYSTEM_PROMPT]
+    if catalog is not None:
+        # Every name, so that a description ("the muscle that lifts the arm") can be answered with a part
+        # the avatar has. It comes before everything that changes per request: Ollama then reuses the
+        # evaluated prompt up to here.
+        for kind, title in (("muscle", "muscles and ligaments"), ("bone", "bones")):
+            names = [part.name for part in catalog.parts if part.kind == kind]
+            if names:
+                lines.append(f"All {title} of this avatar: " + ", ".join(names)[:MAX_ALL_NAMES_CHARS])
+    lines += ["", "Current state of the app: " + json.dumps(_state(ctx), ensure_ascii=False)[:2500]]
     actions = ctx.available_actions
     lines.append("Available action clips: " + (", ".join(actions[:40]) if actions else "none"))
     if catalog is None:
         lines.append("Part list: not available right now, so do not use show_part.")
     else:
-        parts = catalog.candidates(text)
+        parts = _parts_in_question(text, ctx, catalog, history)
         if parts:
-            lines.append("Part list (the parts closest to what the user said):")
+            lines.append("Closest to what the user said:")
             for part in parts:
                 sides = "/".join(part.sides)
                 region = f", {part.region}" if part.region else ""
                 lines.append(f"- {part.kind}: {part.name} ({sides}{region})")
         else:
-            lines.append("Part list: nothing in this avatar's muscles and bones matches the sentence.")
+            lines.append("Closest to what the user said: no name in the lists matches a word of the sentence.")
     messages = [{"role": "system", "content": "\n".join(lines)}]
     messages.extend(history)
     messages.append({"role": "user", "content": text})
@@ -235,24 +294,37 @@ def ask(text: str, ctx: Context, catalog: Catalog | None, history: list[dict] | 
     for action in actions:
         if action.get("type") == "camera" and action.get("op") == "view" and "view" in action:
             action["value"] = action.pop("view")
+    _fix_sides(actions, text)
     return {"reply": clean_reply(answer.get("reply")), "actions": actions}
 
 
-def warm_up() -> None:
-    """Loads the model into memory at startup so the first real question is not slow."""
+def warm_up(attempts: int = 1, wait_s: float = 0.0) -> None:
+    """
+    Loads the model into memory at startup so the first real question is not slow.
+
+    After a reboot this server can be up before Ollama is: the server passes `attempts` and `wait_s` so the
+    warm-up is tried again for a while instead of leaving the first question to load the model.
+    """
     global _ready
     settings = config.settings
     if settings.fake_llm or not settings.llm_warmup:
         return
-    try:
-        log.info("Loading LLM %s ...", settings.llm_model)
-        _post(
-            "/api/generate",
-            {"model": settings.llm_model, "prompt": "", "keep_alive": settings.llm_keep_alive},
-            WARM_UP_TIMEOUT_S,
-        ).raise_for_status()
-        _ready = True
-        log.info("LLM %s ready.", settings.llm_model)
-    except requests.RequestException as error:
-        log.warning("could not load LLM %s from %s: %r", settings.llm_model, settings.ollama_url, error)
-        log.warning("The rule-based commands still work without it.")
+    log.info("Loading LLM %s ...", settings.llm_model)
+    for attempt in range(1, max(1, attempts) + 1):
+        try:
+            _post(
+                "/api/generate",
+                {"model": settings.llm_model, "prompt": "", "keep_alive": settings.llm_keep_alive},
+                WARM_UP_TIMEOUT_S,
+            ).raise_for_status()
+            _ready = True
+            log.info("LLM %s ready.", settings.llm_model)
+            return
+        except requests.RequestException as error:
+            if _ready:
+                return                     # a real question got through in the meantime
+            log.warning("could not load LLM %s from %s (try %d of %d): %r",
+                        settings.llm_model, settings.ollama_url, attempt, max(1, attempts), error)
+            if attempt < attempts:
+                time.sleep(wait_s)
+    log.warning("The rule-based commands still work without it.")

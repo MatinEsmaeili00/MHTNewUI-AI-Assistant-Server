@@ -46,7 +46,8 @@ MultiPartParser.spool_max_size = settings.max_audio_bytes + 1024 * 1024
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Load the models in the background so the server is reachable right away.
-    threading.Thread(target=llm.warm_up, daemon=True).start()
+    # Ollama may start after this server at boot: keep trying for two minutes.
+    threading.Thread(target=llm.warm_up, kwargs={"attempts": 12, "wait_s": 10.0}, daemon=True).start()
     if stt.installed():
         threading.Thread(target=stt.warm_up, daemon=True).start()
     else:

@@ -18,6 +18,8 @@ Unreal (Mac / iPad, anywhere)                      DGX Spark (Louisiana)
 | Read | For |
 |---|---|
 | [docs/HANDOFF.md](docs/HANDOFF.md) | what exists, what was tested where, what to do next on the Spark |
+| [docs/TODO.md](docs/TODO.md) | what is done and what is open, for both machines |
+| [docs/SPARK_NOTES.md](docs/SPARK_NOTES.md) | what was measured and decided on the Spark |
 | [docs/PROTOCOL.md](docs/PROTOCOL.md) | the contract between the app and the server |
 | [docs/NETWORK.md](docs/NETWORK.md) | reaching the Spark from another city |
 | [docs/SETUP_SPARK.md](docs/SETUP_SPARK.md) | installing and running the server on the Spark, step by step |
@@ -117,9 +119,9 @@ Environment variables, or a `.env` file in this folder (`run.sh` reads it; see `
 | `ASSISTANT_API_KEY` | empty | clients must send `Authorization: Bearer <key>`. Empty = no authentication, and `/health` says `auth_required: false` |
 | `PORT` | `8010` | HTTP port (`run.sh` listens on `0.0.0.0`) |
 | `OLLAMA_URL` | `http://localhost:11434` | Ollama server |
-| `LLM_MODEL` | `gemma4:e4b` | any model from `ollama list` |
+| `LLM_MODEL` | `gemma4:e4b` | any model from `ollama list`. The Spark's `.env` has `gemma4:12b` |
 | `LLM_TIMEOUT_S` | `25` | timeout for one LLM call (the app waits 30 s for the whole answer) |
-| `LLM_KEEP_ALIVE` | `1h` | how long Ollama keeps the model in memory after a request |
+| `LLM_KEEP_ALIVE` | `1h` | how long Ollama keeps the model in memory after a request. The Spark's `.env` has `24h` |
 | `LLM_WARMUP` | `1` | `0` = do not load the model when the server starts |
 | `FAKE_LLM` | `0` | `1` = no Ollama: the "LLM" echoes the sentence. For testing the HTTP path |
 | `STT_MODEL` | `base.en` | faster-whisper model (`tiny.en`, `base.en`, `small.en`, ...) |
@@ -152,11 +154,14 @@ assistant/
 tests/                 pytest; needs neither Ollama nor faster-whisper
   fixtures/catalog.json  the avatar's real catalog: 93 muscles and ligaments, 121 bones
 tools/client.py        send a sentence or a .wav to a running server
+tools/acceptance.py    run the acceptance table against a running server, with times (--url for another machine)
+tools/stt_bench.py     compare speech models on a folder of clips; tools/stt_phrases.txt is its phrase list
 run.sh                 starts uvicorn on 0.0.0.0:$PORT (default 8010), reads .env
 deploy/mht-assistant.service   systemd user unit
+deploy/install-service.sh      installs the unit for the folder the repository is in, and (re)starts it
 requirements.txt       the server, with speech recognition
 requirements-dev.txt   tests and the text-only server
-docs/                  PROTOCOL, HANDOFF, NETWORK, SETUP_SPARK, SERVER
+docs/                  PROTOCOL, HANDOFF, TODO, SPARK_NOTES, NETWORK, SETUP_SPARK, SERVER
 ```
 
 ## Tests
@@ -166,7 +171,7 @@ docs/                  PROTOCOL, HANDOFF, NETWORK, SETUP_SPARK, SERVER
 .venv/bin/python -m pytest tests -q
 ```
 
-698 tests, about 3 seconds. They need no Ollama and no faster-whisper: the call to Ollama and the transcription
+716 tests, a few seconds. They need no Ollama and no faster-whisper: the call to Ollama and the transcription
 are replaced by fakes, and a test fails if it reaches for Ollama without saying so.
 
 | File | What it checks |
@@ -175,9 +180,21 @@ are replaced by fakes, and a test fails if it reaches for Ollama without saying 
 | `tests/test_catalog.py` | part matching against the real catalog: exact names, common names, misspellings, side, muscle or bone, unknown parts, the catalog store and its cache files |
 | `tests/test_actions.py` | validation: unknown types, bad enums, numbers out of range, part names and action clips that do not exist |
 | `tests/test_api.py` | the HTTP API: `/health`, the key, `/v1/chat`, the `need_catalog` flow, `/v1/voice` with a fake transcription, 503 without faster-whisper, size limits |
-| `tests/test_llm.py` | the LLM path with a fake Ollama: valid answers, invented names, invalid JSON, timeout, Ollama down |
+| `tests/test_llm.py` | the LLM path with a fake Ollama: valid answers, invented names, invalid JSON, timeout, Ollama down, the prompt (part names, follow-ups), sides the user did not say, the warm-up retry |
 
 ## Status, 2026-11-11
+
+**On the DGX Spark** (later the same day; numbers in [docs/SPARK_NOTES.md](docs/SPARK_NOTES.md)):
+
+- Installed, 716 tests pass, runs as the systemd user service `mht-assistant` on port 8010.
+- The language model has now answered for real: `gemma4:12b`, every answer valid against the protocol, about
+  1.5 s. The prompt was tuned on 30 questions and vague requests.
+- The acceptance table of `docs/HANDOFF.md` passes, text and synthetic speech, through the Tailscale address.
+- The Spark and the Mac are on one Tailscale network and reach each other directly.
+- Still open: a request from the Mac, the app against the Spark, real voices, a reboot. See
+  [docs/TODO.md](docs/TODO.md).
+
+**On the Mac** (earlier):
 
 Written and tested on a Mac (Apple silicon, Python 3.12.16; fastapi 0.162.4, starlette 1.10.0, pydantic 2.14.3,
 uvicorn 0.54.0, faster-whisper 1.2.1, ctranslate2 4.9.0, av 17.1.0).
@@ -203,9 +220,7 @@ Tested on that Mac:
 
 Not tested by anyone yet:
 
-- **Anything on the DGX Spark** (Ubuntu, aarch64): installing, the tests, Whisper speed, the systemd unit.
-- **The language model**: `assistant/llm.py` has only been run against a fake Ollama in the tests. The prompt,
-  the JSON schema with `gemma4:e4b`, the answer quality and the latency are unverified.
-- **Real voices and a real microphone**: only synthetic speech was used.
-- **The network** between the app and the server: only `127.0.0.1` so far.
-- `deploy/mht-assistant.service` was written, not run.
+- **Real voices and a real microphone**: only synthetic speech was used, on both machines.
+- **The app against the Spark**: the app has only talked to a server on `127.0.0.1`; the Spark's server has only
+  been called from the Spark (through its Tailscale address).
+- **A reboot of the Spark** with the service enabled.

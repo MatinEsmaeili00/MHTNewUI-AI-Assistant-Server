@@ -2,12 +2,16 @@
 
 Follow this from top to bottom. Every step has a check; do not go on when a check fails.
 
-Written on a Mac. **None of these steps has been run on the Spark yet.** If a step does not work as written,
-fix this page and note what happened in `docs/SPARK_NOTES.md`.
+Written on a Mac, then run on the Spark on 2026-11-11 and corrected where it did not fit. What was measured
+and decided there is in `docs/SPARK_NOTES.md`.
 
-Assumed: Ubuntu on aarch64, Python 3.12, Ollama installed, the repository cloned to
-`~/MHTNewUI-AI-Assistant-Server`. If it is somewhere else, use that path everywhere, including in
-`deploy/mht-assistant.service`.
+Assumed: Ubuntu on aarch64, Python 3.12, Ollama installed. The commands are written for a clone in
+`~/MHTNewUI-AI-Assistant-Server`; on the Spark the repository is in
+`~/DigitalHuman_ai/MHTNewUI-AI-Assistant-Server`. Use the real folder in every `cd`; the service script in
+step 8 finds it by itself.
+
+Steps 1 to 7 and the service need no `sudo`. Only Tailscale (step 10), a firewall rule and a speech synthesizer
+from `apt` do.
 
 ## 1. The machine
 
@@ -47,7 +51,8 @@ fails with it. The pin is in `requirements.txt`.
 .venv/bin/python -m pytest tests -q
 ```
 
-Check: `698 passed`. The tests need neither Ollama nor the Whisper model. If one fails here and passed on the
+Check: `716 passed` (698 before the changes made on the Spark). The tests need neither Ollama nor the Whisper
+model. If one fails here and passed on the
 Mac, that is a finding: write it into `docs/SPARK_NOTES.md` before fixing it.
 
 ## 4. Settings
@@ -82,7 +87,9 @@ time curl -s http://localhost:11434/api/chat -d '{"model":"gemma4:e4b","stream":
 Check: the answer has `"content":"{\"reply\": ...}"`. If the model answers `does not support thinking`, that is
 fine: the server retries without the `think` flag by itself.
 
-To use another model, put `LLM_MODEL=<name>` in `.env`.
+To use another model, put `LLM_MODEL=<name>` in `.env`. The Spark runs `gemma4:12b` (`ollama pull gemma4:12b`,
+8 GB): it gets anatomy right where `gemma4:e4b` did not, at about 1.5 s per answer instead of 1 s. See
+`docs/SPARK_NOTES.md`.
 
 ## 6. First start, in a terminal
 
@@ -150,6 +157,19 @@ espeak-ng -w /tmp/clip.wav "show me the left biceps"
 .venv/bin/python tools/client.py /tmp/clip.wav
 ```
 
+Without `sudo` (what was done on the Spark): Piper in its own environment, which also sounds far more like a
+person than espeak.
+
+```bash
+python3 -m venv /tmp/tts && /tmp/tts/bin/pip install piper-tts
+cd /tmp/tts && bin/python -m piper.download_voices en_US-lessac-medium
+bin/python -m piper -m en_US-lessac-medium -f /tmp/clip.wav -- "show me the left biceps"
+```
+
+To compare speech models on a folder of clips (synthetic or recorded), without a running server:
+`.venv/bin/python tools/stt_bench.py <folder> --models base.en small.en` (the folder layout is in the file's
+first lines).
+
 Check: `transcript` is what was said and `actions` has the `show_part`. With `SAVE_LAST_AUDIO=1` (the default)
 the last clip the server received is `last_voice.wav` in this folder: listen to it when the app's voice
 commands are misheard.
@@ -171,6 +191,14 @@ Stop the server with Ctrl+C before the next step.
 A systemd **user** unit, so it needs no root and runs as you.
 
 ```bash
+deploy/install-service.sh
+```
+
+The script writes `~/.config/systemd/user/mht-assistant.service` with the folder this repository is really in,
+enables it, (re)starts it and prints `/health`. Run it again after moving the repository. By hand, for a clone
+in `~/MHTNewUI-AI-Assistant-Server`:
+
+```bash
 mkdir -p ~/.config/systemd/user
 cp deploy/mht-assistant.service ~/.config/systemd/user/
 systemctl --user daemon-reload
@@ -188,13 +216,13 @@ loginctl show-user "$USER" | grep Linger       # Linger=yes
 
 Check: log out, log in again (or reboot), then `curl -s localhost:8010/health` still answers.
 
-The unit starts `run.sh` in `~/MHTNewUI-AI-Assistant-Server`. If the repository is somewhere else, change
-`WorkingDirectory` and `ExecStart` in `~/.config/systemd/user/mht-assistant.service` and run
-`systemctl --user daemon-reload` again.
+On the Spark `Linger=yes` was already set, so the `sudo` line was not needed. The log-out / reboot check has
+not been done there yet (the machine had been up for 46 days and runs other projects).
 
 Ollama must be running too. After a reboot: `systemctl status ollama` (it is a system service when installed
-with the official script). If the server started before Ollama, `llm_ready` is false until the first question
-that needs the model; that question loads it.
+with the official script, and it is enabled on the Spark). If this server starts before Ollama, it tries to
+load the model again every 10 seconds for two minutes; `llm_ready` turns true when that works, or at the first
+question that needs the model.
 
 ## 9. Logs and everyday commands
 
@@ -225,10 +253,12 @@ systemctl --user restart mht-assistant
 
 ## 10. Reaching it from outside
 
-`docs/NETWORK.md`. The server already listens on `0.0.0.0:8010`. From the other machine:
+`docs/NETWORK.md` (its first section has the addresses as they are set up). The server already listens on
+`0.0.0.0:8010`. From the other machine:
 
 ```bash
 curl -s http://<address>:8010/health
+ASSISTANT_API_KEY=<the key> .venv/bin/python tools/acceptance.py --url http://<address>:8010 --extra
 ```
 
 Then in the app: `/server http://<address>:8010`, `/key <the key>`, `/status`.
@@ -243,7 +273,7 @@ Then in the app: `/server http://<address>:8010`, `/key <the key>`, `/status`.
 | `/v1/voice` answers 503 | faster-whisper missing (`pip install -r requirements.txt`) or the model could not be loaded (log) |
 | voice works, the transcript is wrong | listen to `last_voice.wav`; then `STT_PROMPT` or `STT_MODEL=small.en` |
 | `source: "error"` for every question | Ollama not running, model not pulled, or slower than `LLM_TIMEOUT_S` (25 s) |
-| the first question after a pause takes long | the model was unloaded: raise `LLM_KEEP_ALIVE` (default `1h`) |
+| the first question after a pause takes long | the model was unloaded: raise `LLM_KEEP_ALIVE` (default `1h`; the Spark's `.env` has `24h`). Loading `gemma4:12b` takes about 16 s |
 | 401 from the app | the key in the app (`/key`) is not the one in `.env`; restart the server after changing `.env` |
 | 401 on `/health` | not from this server: `/health` never needs a key |
 | the app gets `need_catalog` on every request | the catalog the app sends is empty or not in the protocol's form; the log line shows `need_catalog` |

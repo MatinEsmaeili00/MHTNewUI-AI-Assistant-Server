@@ -4,8 +4,46 @@ The app only makes outgoing HTTP requests to the server (`GET /health`, `POST /v
 server never connects back. So the only question is: how does a laptop or iPad on some network in Los Angeles
 reach port 8010 of a machine inside the university network in Louisiana?
 
-The Spark's campus address (the earlier robot project used `130.39.94.33`) is normally not reachable from
-outside the campus. Three ways around that, best first.
+The Spark's campus address (`130.39.93.164` on 2026-11-11; the earlier robot project used `130.39.94.33`) is
+normally not reachable from outside the campus. Three ways around that, best first.
+
+## The link as it is set up (2026-11-11)
+
+Tailscale (option A below) is installed on the Spark and signed in to the user's Tailscale account.
+
+| | |
+|---|---|
+| The Spark's name on the private network | `spark-99eb` (full name `spark-99eb.tail6962d3.ts.net`) |
+| Its address there | `100.118.119.14` |
+| Server | `http://100.118.119.14:8010` or `http://spark-99eb:8010` |
+| Key | in `.env` on the Spark, not in this repository: `grep '^ASSISTANT_API_KEY=' .env` |
+
+Checked on the Spark itself, through the Tailscale address: `/health`, the acceptance table by text
+(`tools/acceptance.py --url http://100.118.119.14:8010 --extra`), five spoken clips to `/v1/voice`, and `401`
+for a missing and a wrong key. **Not checked yet: a request from another machine.** The Mac was not on this
+Tailscale network when this was written.
+
+On the Mac, once:
+
+1. Install Tailscale (tailscale.com/download or the Mac App Store) and sign in with the same account. The Spark
+   then shows up as `spark-99eb` in the Tailscale menu.
+2. In a terminal:
+   ```bash
+   tailscale ping spark-99eb                       # "via <address>" = direct, "via DERP(dfw)" = relayed
+   curl http://100.118.119.14:8010/health          # "status":"ok", "llm_ready":true, "stt_ready":true
+   ```
+3. In the server repository on the Mac (`git pull` first), the whole acceptance table across the real link:
+   ```bash
+   ASSISTANT_API_KEY=<the key> .venv/bin/python tools/acceptance.py --url http://100.118.119.14:8010 --extra
+   ```
+   The "round trip" column minus the "server" column is the network.
+4. In the app's chat box: `/server http://100.118.119.14:8010`, then `/key <the key>`, then `/status`.
+
+If `spark-99eb` does not resolve on the Mac, use the address; names need MagicDNS (it is on for this account).
+
+The server also answers on the Spark's campus address (`130.39.93.164:8010`) for machines inside the campus
+network, because it listens on every interface. The key protects `/v1/chat` and `/v1/voice`; `/health` is open.
+To close that path, allow the port on the Tailscale interface only (needs sudo, see the notes below).
 
 ## A. Tailscale (recommended)
 
@@ -80,6 +118,8 @@ Not tested. Two things are known in advance:
 - iOS refuses plain `http://` from apps unless the app declares an exception. With Tailscale, the clean way is
   an `https://` address: `tailscale serve --bg 8010` on the Spark gives `https://<name>.<tailnet>.ts.net`
   with a real certificate, reachable only from your own devices.
+  For this Spark that is `https://spark-99eb.tail6962d3.ts.net`. Not switched on yet: it needs `sudo` on the
+  Spark and HTTPS certificates enabled for the account (Tailscale admin page, DNS).
 - The microphone needs a usage description in the app's Info.plist (`NSMicrophoneUsageDescription`) or iOS
   closes the app at the first recording.
 

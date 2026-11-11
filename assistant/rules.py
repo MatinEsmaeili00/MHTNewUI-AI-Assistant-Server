@@ -274,6 +274,14 @@ _JOINT_RE = re.compile(
 )
 
 
+# A question about what an angle means, not what it is. The language model sees the angles too.
+_JUDGEMENT_RE = re.compile(
+    r"\b(?:normal|good|bad|ok|okay|fine|healthy|safe|dangerous|correct|wrong|ideal|optimal|enough|problem"
+    r"|risky?|injur\w*|should|mean|means|why|improve|better|worse|too (?:much|little|high|low|big|small|far)"
+    r"|compared?)\b"
+)
+
+
 def _asked_angles(piece: str, ctx: Context) -> list[str]:
     names: list[str] = []
     for side, joint in _JOINT_RE.findall(piece):
@@ -312,6 +320,8 @@ def _rule_pose_angle(core: str, piece: str, ctx: Context, catalog, joined: bool)
     known = ctx.pose_angles
     have = {name: known[name] for name in asked if name in known}
     missing = [name for name in asked if name not in known]
+    if have and _JUDGEMENT_RE.search(piece):
+        return None        # "is my knee angle normal for running": the number alone is no answer -> LLM
     if have and not missing:
         return Result([], _angle_sentence(have))
     if have:
@@ -881,6 +891,12 @@ _NOT_A_NAME = {
 }
 
 
+# "the muscle that lifts the arm": a description, not a name. The core has lost "that", so look at the piece.
+_DESCRIBED_RE = re.compile(
+    r"\b(?:muscles?|bones?|ligaments?|tendons?|parts?|ones?|things?) (?:that|which|who|where|used|involved"
+    r"|responsible)\b"
+)
+
 # Said alone, these are more likely "go back" / "the front" than a body region.
 _NOT_A_BARE_PART = {"back", "head", "face", "hand", "core", "index", "pointer", "temple", "hammer", "anvil"}
 
@@ -939,7 +955,7 @@ def _rule_part(core: str, piece: str, ctx: Context, catalog: Catalog | None, joi
     words = target.split()
     if not words or len(words) > MAX_PART_WORDS:
         return None
-    plausible = len(words) <= 5 and not (_NOT_A_NAME & set(words))
+    plausible = len(words) <= 5 and not (_NOT_A_NAME & set(words)) and not _DESCRIBED_RE.search(piece)
 
     if catalog is None:
         if (verb and not asks_what and plausible) or mentions_anatomy(target):

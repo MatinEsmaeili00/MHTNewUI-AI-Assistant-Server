@@ -1,0 +1,36 @@
+Switch to the muscle layer.
+Show me the skeleton.
+Pause.
+Play.
+Make it faster.
+Half speed.
+Zoom in.
+Zoom out a lot.
+Look from behind.
+Reset the view.
+Activate real time pose estimation and read the data.
+What is the right knee angle?
+Show me the left biceps.
+Highlight the femur.
+Show me the hamstring.
+Make her run.
+Bones.
+Show me the gastrocnemius.
+Show me the sartorius.
+Show me the biceps femoris.
+Show me the semitendinosus.
+Show me the tibialis anterior.
+Show me the brachioradialis.
+Show me the psoas major.
+Where is the right gluteus maximus?
+Highlight the left tibia.
+Show me the patella.
+Show me the soleus.
+Show me the trapezius.
+Show me the right deltoid.
+Show me the rectus femoris.
+Point to the scapula.
+Show me the lats.
+Stop the pose estimation.
+Open the graphs.
+Next avatar.

@@ -88,14 +88,16 @@ def test_the_request_to_ollama(ollama, context, known_catalog):
     assert payload["messages"][-1] == {"role": "user", "content": "what does the deltoid do?"}
     system = payload["messages"][0]
     assert system["role"] == "system"
-    # the candidate parts are in the prompt, the other 200 names are not
+    # every name of the avatar is in the prompt (for "the muscle that lifts the arm"), and a short list
+    # of the parts closest to the sentence
     assert "Deltoid (middle)" in system["content"]
-    assert "Vomer" not in system["content"] and "Cuboid" not in system["content"]
-    assert system["content"].count("\n- ") <= 12
+    assert "Vomer" in system["content"] and "Cuboid" in system["content"]
+    assert "\n- muscle: Deltoid (middle)" in system["content"]
+    assert 1 <= system["content"].count("\n- ") <= 12
     # the state and the available actions are in the prompt
     assert '"layer": "body"' in system["content"]
     assert "Idle, Running, Jogging, TennisForehand" in system["content"]
-    assert len(system["content"]) < 8000
+    assert len(system["content"]) < 12000
 
 
 def test_actions_from_the_model_are_used_after_validation(ollama, context, known_catalog):
@@ -290,6 +292,24 @@ def test_warm_up_failure_is_not_fatal(ollama):
     assert llm.ready() is False
 
 
+def test_warm_up_tries_again_while_ollama_is_not_up_yet(ollama, monkeypatch):
+    """After a reboot the server can be up before Ollama."""
+    monkeypatch.setattr(llm.time, "sleep", lambda seconds: None)
+    answers = [requests.ConnectionError("refused"), requests.ConnectionError("refused"), FakeResponse("")]
+    ollama["answer"] = lambda payload: answers.pop(0)
+    llm.warm_up(attempts=5, wait_s=10)
+    assert llm.ready() is True
+    assert len(ollama["calls"]) == 3
+
+
+def test_warm_up_gives_up_after_the_last_try(ollama, monkeypatch):
+    monkeypatch.setattr(llm.time, "sleep", lambda seconds: None)
+    ollama["answer"] = requests.ConnectionError("refused")
+    llm.warm_up(attempts=3, wait_s=10)
+    assert llm.ready() is False
+    assert len(ollama["calls"]) == 3
+
+
 def test_warm_up_can_be_switched_off(ollama, monkeypatch):
     monkeypatch.setattr(config.settings, "llm_warmup", False)
     llm.warm_up()
@@ -311,7 +331,53 @@ def test_prompt_without_catalog_and_context(catalog):
     assert "do not use show_part" in messages[0]["content"]
     assert "Available action clips: none" in messages[0]["content"]
     messages = llm.build_messages("tell me a joke", Context({}), catalog, [])
-    assert "nothing in this avatar's muscles and bones matches" in messages[0]["content"]
+    assert "no name in the lists matches a word of the sentence" in messages[0]["content"]
+    assert "All muscles and ligaments of this avatar: " in messages[0]["content"]
+    assert "All bones of this avatar: " in messages[0]["content"]
+
+
+def test_names_come_before_what_changes_per_request(catalog, context):
+    """Ollama reuses the evaluated prompt up to the first difference: the long name lists must be in that part."""
+    first = llm.build_messages("what does the deltoid do?", Context(context), catalog, [])[0]["content"]
+    context["layer"] = "skeleton"
+    second = llm.build_messages("show me the bone of the heel", Context(context), catalog, [])[0]["content"]
+    same = next(i for i, (a, b) in enumerate(zip(first, second)) if a != b)
+    assert first.index("All bones of this avatar: ") < same
+    assert first.index("Current state of the app") <= same
+
+
+def test_follow_up_without_a_name_gets_the_parts_of_the_last_turns(ollama, context, known_catalog):
+    context.pop("selected_part")
+    ask("what does the gastrocnemius do?", context)            # LLM; remembered for the session
+    ask("ok show it to me", context)                           # no name in this sentence
+    closest = ollama["calls"][-1]["payload"]["messages"][0]["content"].split("Closest to what the user said")[1]
+    assert "- muscle: Gastrocnemius" in closest
+
+
+def test_highlighted_part_is_among_the_closest_parts(ollama, context, known_catalog):
+    ask("tell me more about it", context)                      # selected_part: left Biceps brachii
+    closest = ollama["calls"][-1]["payload"]["messages"][0]["content"].split("Closest to what the user said")[1]
+    assert "- muscle: Biceps brachii" in closest
+
+
+@pytest.mark.parametrize("text, side", [
+    ("show me the muscle runners pull at the back of the thigh", ""),      # nobody said a side
+    ("show me the muscle that bends the knee on the left", "left"),
+    ("show me the muscle that bends the knee on the other leg", "right"),
+])
+def test_side_from_the_model_is_kept_only_when_the_user_said_one(ollama, context, known_catalog, text, side):
+    model_side = side or "right"
+    ollama["answer"] = {"reply": "Showing it.", "actions": [
+        {"type": "show_part", "kind": "muscle", "name": "Biceps femoris (long head)", "side": model_side}]}
+    answer = ask(text, context)
+    assert answer["source"] == "llm"
+    assert answer["actions"] == [
+        {"type": "show_part", "kind": "muscle", "name": "Biceps femoris (long head)", "side": side}]
+
+
+def test_prompt_says_act_or_ask():
+    for line in ("Either act or ask, never both", "A question gets an answer", "Never use another action instead"):
+        assert line in llm.SYSTEM_PROMPT
 
 
 def test_prompt_lists_every_action_type():

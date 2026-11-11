@@ -2,6 +2,11 @@
 
 Written 2026-11-11 on the Mac that has the Unreal project. Read this first on the DGX Spark.
 
+> **Update, 2026-11-11, from the Spark.** Phases 1 and 2 below are done, and the Spark is on the same Tailscale
+> network as the Mac. What was measured and decided: `docs/SPARK_NOTES.md`. What is open, and for whom:
+> `docs/TODO.md`. The address for the app: `docs/NETWORK.md`, first section. Phase 3 (the app against the
+> Spark) is the next step and needs the Mac.
+
 ## The whole thing in five lines
 
 - An Unreal Engine app (the "Avatar Injury Prevention" viewer: a MetaHuman with body / muscle / skeleton layers,
@@ -51,26 +56,34 @@ Written and tested on the Mac; see `README.md` (status section) for exactly what
 server.py            FastAPI: GET /health, POST /v1/chat, POST /v1/voice, bearer key, size limits
 assistant/           config, text, context, catalog (name matching), rules (the fast parser), llm (Ollama),
                      actions (validation), stt (faster-whisper), pipeline, sessions
-tests/               698 tests; they need neither Ollama nor faster-whisper
+tests/               716 tests (698 when this was written); they need neither Ollama nor faster-whisper
 tools/client.py      send a sentence or a .wav to a running server
+tools/acceptance.py  the table "Phrases that must work" below against a running server (added on the Spark)
+tools/stt_bench.py   compare speech models on a folder of clips (added on the Spark)
 run.sh               reads .env, starts uvicorn on 0.0.0.0:8010
-deploy/              systemd user unit (written, never run)
+deploy/              systemd user unit and install-service.sh (running on the Spark)
 docs/SETUP_SPARK.md  the install on the Spark, step by step
 docs/SERVER.md       how a request is processed, how to add a command or a name
+docs/SPARK_NOTES.md  what was measured and decided on the Spark
+docs/TODO.md         what is open
 ```
 
 - Every direct command is answered by rules in about a millisecond, with Ollama stopped.
 - Speech: 33 synthetic clips, `base.en` on the Mac's CPU, about 0.3 s each; 26 written exactly, the rest
   recovered by fuzzy matching or by entries added to the "misheard" table.
 
-What could not be done on the Mac and is yours on the Spark:
+What could not be done on the Mac and is yours on the Spark (state on 2026-11-11 in brackets; details in
+`docs/SPARK_NOTES.md`):
 
 1. Anything with **Ollama**: `assistant/llm.py` has only run against a fake HTTP layer. Whether `gemma4:e4b`
    accepts the JSON schema, how good and how fast its answers are, is unknown.
+   [Done. It accepts the schema. `gemma4:12b` is used instead: better answers, about 1.5 s.]
 2. **Whisper on the Spark's hardware and with real voices**: model size, speed, accuracy on anatomical words,
    whether `STT_PROMPT` helps (see `.env.example`: it fixed five clips and broke one).
-3. The **network** between Los Angeles and the Spark.
-4. Running it as a **service** (the systemd unit was never started).
+   [Measured on the Spark's CPU with synthetic clips. Real voices: still open.]
+3. The **network** between Los Angeles and the Spark. [Tailscale on both machines; they reach each other.
+   The first request from the Mac to the server is still open.]
+4. Running it as a **service** (the systemd unit was never started). [Running. Reboot not tried.]
 5. Python other than 3.12 was not tried.
 
 ## Phase 1 — the machine and the network
